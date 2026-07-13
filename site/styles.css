@@ -3,3 +3,4 @@
 @media(max-width:760px){.app-shell{display:block}.sidebar{transform:translateX(-100%);transition:transform .2s ease;box-shadow:20px 0 50px #10182833}.sidebar.open{transform:translateX(0)}.app-main{min-height:100vh}.topbar{justify-content:space-between;padding:0 16px}.menu-toggle{display:block}.account span{display:none}.content-wrap{padding:24px 16px 40px}.metric-grid{grid-template-columns:1fr 1fr}.action-column{grid-template-columns:1fr}.page-heading h1{font-size:28px}.metric-card{padding:16px;min-height:118px}.metric-icon{display:none}th,td{padding:11px 14px}.login{padding:30px 24px}}
 @media(max-width:480px){.metric-grid{grid-template-columns:1fr}.metric-card{min-height:auto}.page-heading{align-items:center}.status{font-size:12px}.panel-heading{padding:16px}.login h1{font-size:28px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+[hidden]{display:none!important}
