@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://accounts.google.com/gsi/client; frame-src https://accounts.google.com; connect-src 'self' https://lester-apps-auth.jllester-email.workers.dev; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <title>Lester Apps</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div><h1>Lester Apps</h1><p class="subtitle">Your Journey workspace</p></div>
+      <button id="sign-out" class="quiet" hidden>Sign out</button>
+    </header>
+    <section id="login" class="login" aria-labelledby="login-title">
+      <h2 id="login-title">Sign in to continue</h2>
+      <p>Access is limited to approved Google accounts. Your session remains active for 24 hours.</p>
+      <div id="google-signin"></div>
+      <p id="login-error" class="error" role="alert"></p>
+    </section>
+    <section id="workspace" hidden>
+      <p id="welcome" class="welcome"></p>
+      <nav class="journeys" aria-label="Journey apps">
+        <button data-app="dashboard" class="active">Dashboard</button>
+        <button data-app="finance">Finance</button>
+        <button data-app="school">School</button>
+        <button data-app="job">Job</button>
+        <button data-app="life">Life</button>
+      </nav>
+      <section class="content" aria-live="polite">
+        <div id="loading" hidden>Loading securely…</div>
+        <pre id="data"></pre>
+        <p id="data-error" class="error"></p>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
