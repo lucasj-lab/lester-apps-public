@@ -112,6 +112,7 @@ async function initialize() {
 
 $('.journeys').addEventListener('click', event => {
   const button = event.target.closest('button[data-app]'); if (!button) return;
+  if (button.dataset.app === 'finance') { location.href = 'finance/'; return; }
   document.querySelectorAll('.journeys button').forEach(item => item.classList.toggle('active', item === button));
   $('.sidebar').classList.remove('open'); $('#menu-toggle').setAttribute('aria-expanded','false');
   loadApp(button.dataset.app);
