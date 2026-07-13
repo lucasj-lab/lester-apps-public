@@ -49,6 +49,7 @@ function openGoogleLogin() {
   google.accounts.id.prompt(notification => {
     if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
       loginError.textContent = 'Use the Google sign-in button below to choose an approved account.';
+      document.querySelector('#google-signin').hidden = false;
     }
   });
 }
