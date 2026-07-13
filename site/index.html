@@ -6,35 +6,89 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://lester-apps-auth.jllester-email.workers.dev; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>Lester Apps</title>
-  <link rel="stylesheet" href="styles.css?v=4">
-  <script src="app.js?v=5" defer></script>
+  <link rel="stylesheet" href="styles.css?v=6">
+  <script src="app.js?v=6" defer></script>
 </head>
 <body>
-  <main class="shell">
-    <header>
-      <div><h1>Lester Apps</h1><p class="subtitle">Your Journey workspace</p></div>
-      <button id="sign-out" class="quiet" hidden>Sign out</button>
-    </header>
+  <main class="login-shell" id="login-shell">
     <section id="login" class="login" aria-labelledby="login-title">
-      <h2 id="login-title">Sign in to continue</h2>
-      <p>Access is limited to approved Google accounts. Your session remains active for 24 hours.</p>
+      <div class="brand-mark">L</div>
+      <p class="login-brand">Lester Apps</p>
+      <h1 id="login-title">Your Journey workspace</h1>
+      <p>One secure place for your finances, schoolwork, career progress, and personal operating system.</p>
       <a id="login-button" class="primary" href="https://lester-apps-auth.jllester-email.workers.dev/auth/login">Continue with Google</a>
+      <p class="session-note">Access is limited to approved accounts. Sessions stay active for 24 hours.</p>
       <p id="login-error" class="error" role="alert"></p>
     </section>
-    <section id="workspace" hidden>
-      <p id="welcome" class="welcome"></p>
+  </main>
+
+  <main id="workspace" class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark small">L</span><span>Lester Apps</span></div>
       <nav class="journeys" aria-label="Journey apps">
-        <button data-app="dashboard" class="active">Dashboard</button>
-        <button data-app="finance">Finance</button>
-        <button data-app="school">School</button>
-        <button data-app="job">Job</button>
-        <button data-app="life">Life</button>
+        <button data-app="dashboard" class="active"><span class="nav-icon">⌂</span><span>Dashboard</span></button>
+        <button data-app="finance"><span class="nav-icon">▣</span><span>Finance</span></button>
+        <button data-app="school"><span class="nav-icon">◇</span><span>School</span></button>
+        <button data-app="job"><span class="nav-icon">□</span><span>Job</span></button>
+        <button data-app="life"><span class="nav-icon">○</span><span>Life</span></button>
       </nav>
-      <section class="content" aria-live="polite">
-        <div id="loading" hidden>Loading securely…</div>
-        <pre id="data"></pre>
-        <p id="data-error" class="error"></p>
-      </section>
+      <div class="sidebar-foot"><span class="secure-dot"></span>Secured by Cloudflare</div>
+    </aside>
+
+    <section class="app-main">
+      <header class="topbar">
+        <button id="menu-toggle" class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+        <div class="account"><span id="welcome"></span><button id="sign-out" class="sign-out">Sign out</button></div>
+      </header>
+
+      <div class="content-wrap">
+        <section id="loading" class="loading-state" aria-live="polite" hidden>
+          <div class="skeleton title-skeleton"></div>
+          <div class="skeleton-grid"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+        </section>
+
+        <section id="app-content" hidden>
+          <div class="page-heading">
+            <div><p id="page-date" class="page-date"></p><h1 id="app-name"></h1></div>
+            <span id="app-status" class="status"><span></span>Live</span>
+          </div>
+          <section id="metrics" class="metric-grid" aria-label="Key metrics"></section>
+
+          <div class="dashboard-grid">
+            <div class="data-column">
+              <section class="panel">
+                <div class="panel-heading"><div><h2>Signals</h2><p>What needs your attention right now</p></div><span id="signal-count" class="count-label"></span></div>
+                <div class="table-wrap"><table><thead><tr><th>Signal</th><th>Value</th><th>Context</th></tr></thead><tbody id="signals-body"></tbody></table></div>
+                <div id="signals-empty" class="empty" hidden>No signals available yet.</div>
+              </section>
+              <section class="panel">
+                <div class="panel-heading"><div><h2>Journey details</h2><p>A structured view of the latest secure response</p></div></div>
+                <div class="table-wrap"><table><thead><tr><th>Field</th><th>Current value</th></tr></thead><tbody id="details-body"></tbody></table></div>
+              </section>
+            </div>
+
+            <aside class="action-column">
+              <section class="panel action-panel">
+                <div class="panel-heading"><div><h2>Quick action</h2><p>Capture your next move</p></div></div>
+                <form id="quick-action-form">
+                  <label>Action type<select id="action-type"><option>Follow-up</option><option>Task</option><option>Reminder</option><option>Note</option></select></label>
+                  <label>For<input id="action-for" required maxlength="80" placeholder="Company, class, bill, or goal"></label>
+                  <label>Notes<textarea id="action-notes" rows="4" maxlength="240" placeholder="Add a short note…"></textarea></label>
+                  <label>Due date<input id="action-date" type="date"></label>
+                  <button class="primary action-submit" type="submit">Add action</button>
+                </form>
+                <p id="action-success" class="success" role="status"></p>
+              </section>
+              <section class="panel saved-panel">
+                <div class="panel-heading"><div><h2>Saved actions</h2><p>Stored on this device</p></div></div>
+                <div id="saved-actions"></div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section id="data-error" class="error-panel" role="alert" hidden><h2>We couldn’t load this Journey</h2><p></p><button id="retry-button" class="primary">Try again</button></section>
+      </div>
     </section>
   </main>
 </body>
