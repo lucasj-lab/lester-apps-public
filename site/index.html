@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://accounts.google.com/gsi/client; frame-src https://accounts.google.com; connect-src 'self' https://lester-apps-auth.jllester-email.workers.dev; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://lester-apps-auth.jllester-email.workers.dev; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>Lester Apps</title>
   <link rel="stylesheet" href="styles.css?v=4">
-  <script src="app.js?v=4" defer></script>
+  <script src="app.js?v=5" defer></script>
 </head>
 <body>
   <main class="shell">
@@ -18,8 +18,7 @@
     <section id="login" class="login" aria-labelledby="login-title">
       <h2 id="login-title">Sign in to continue</h2>
       <p>Access is limited to approved Google accounts. Your session remains active for 24 hours.</p>
-      <button id="login-button" class="primary" type="button">Continue with Google</button>
-      <div id="google-signin" class="google-fallback" aria-label="Official Google account chooser"></div>
+      <a id="login-button" class="primary" href="https://lester-apps-auth.jllester-email.workers.dev/auth/login">Continue with Google</a>
       <p id="login-error" class="error" role="alert"></p>
     </section>
     <section id="workspace" hidden>
