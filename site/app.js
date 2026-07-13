@@ -93,7 +93,7 @@ async function openGoogleLogin() {
 
 function setupGoogle() {
   if (!globalThis.google?.accounts?.id) return false;
-  google.accounts.id.initialize({client_id: googleClientId, callback: handleCredential});
+  google.accounts.id.initialize({client_id: googleClientId, callback: handleCredential, use_fedcm_for_prompt: true});
   document.querySelector('#google-signin').replaceChildren();
   google.accounts.id.renderButton(document.querySelector('#google-signin'), {theme:'outline',size:'large',shape:'rectangular',width:320});
   googleReady = true;
