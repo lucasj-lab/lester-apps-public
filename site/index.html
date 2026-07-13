@@ -6,8 +6,8 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' https://lester-apps-auth.jllester-email.workers.dev; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
   <title>Lester Apps</title>
-  <link rel="stylesheet" href="styles.css?v=7">
-  <script src="app.js?v=6" defer></script>
+  <link rel="stylesheet" href="styles.css?v=8">
+  <script src="app.js?v=8" defer></script>
 </head>
 <body>
   <main class="login-shell" id="login-shell">
@@ -53,6 +53,15 @@
             <span id="app-status" class="status"><span></span>Live</span>
           </div>
           <section id="metrics" class="metric-grid" aria-label="Key metrics"></section>
+
+          <section id="finance-budget" class="finance-budget" hidden>
+            <div id="finance-summary" class="finance-summary"></div>
+            <section class="budget-panel">
+              <div class="budget-heading"><div><h2>Monthly Budget</h2><p id="budget-month"></p></div><span>Connected to Lester Income, Expenses, &amp; Debt</span></div>
+              <div class="table-wrap"><table class="budget-table"><thead><tr><th>Billing account</th><th>Projected</th><th>Actual</th><th>Remaining</th><th>Status</th></tr></thead><tbody id="budget-body"></tbody></table></div>
+              <div id="budget-empty" class="empty" hidden>No budget categories are available yet.</div>
+            </section>
+          </section>
 
           <div class="dashboard-grid">
             <div class="data-column">

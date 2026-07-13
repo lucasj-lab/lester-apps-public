@@ -46,6 +46,29 @@ function renderDetails(data) {
   $('#details-body').innerHTML = rows.map(([key,value]) => `<tr><td>${escapeHtml(key.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase()))}</td><td>${escapeHtml(displayValue(value))}</td></tr>`).join('');
 }
 
+const money = value => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(value || 0));
+
+function renderFinance(data) {
+  const budget = data.budget || {};
+  const rows = Array.isArray(budget.rows) ? budget.rows : [];
+  const net = Number(budget.projectedTotal || 0) - Number(budget.actualTotal || 0);
+  $('#finance-summary').innerHTML = [
+    {label:'Projected budget',value:money(budget.projectedTotal),detail:'Planned monthly expenses'},
+    {label:'Actual expenses',value:money(budget.actualTotal),detail:'Workbook actuals'},
+    {label:'Budget remaining',value:money(budget.remainingTotal || net),detail:'Projected less actual',positive:Number(budget.remainingTotal || net) >= 0}
+  ].map((item,index)=>`<article class="finance-card ${index===2?'net-card':''}"><div><p>${escapeHtml(item.label)}</p><strong>${escapeHtml(item.value)}</strong><span>${escapeHtml(item.detail)}</span></div></article>`).join('');
+  $('#budget-month').textContent = budget.monthLabel || 'Current month';
+  $('#budget-empty').hidden = rows.length > 0;
+  $('#budget-body').innerHTML = rows.map((row,index)=>{
+    const remaining=Number(row.projected||0)-Number(row.actual||0);
+    const status=row.status || (remaining < 0 ? 'Over budget' : 'On track');
+    return `<tr><td><span class="category-dot tone-${index%4}"></span><strong>${escapeHtml(row.category||'Uncategorized')}</strong></td><td>${money(row.projected)}</td><td>${money(row.actual)}</td><td class="${remaining<0?'negative':'positive'}">${money(remaining)}</td><td><span class="budget-status ${remaining<0?'over':'track'}">${escapeHtml(status)}</span></td></tr>`;
+  }).join('');
+  $('#finance-budget').hidden = false;
+  $('.dashboard-grid').hidden = true;
+  $('#metrics').hidden = true;
+}
+
 function renderApp(data) {
   $('#app-name').textContent = data.appName || activeApp;
   $('#app-status').lastChild.textContent = ` ${data.status || 'Live'}`;
@@ -53,6 +76,10 @@ function renderApp(data) {
   renderMetrics(data.metrics || []);
   renderSignals(data);
   renderDetails(data);
+  $('#finance-budget').hidden = true;
+  $('.dashboard-grid').hidden = false;
+  $('#metrics').hidden = false;
+  if (data.appKey === 'finance') renderFinance(data);
   $('#app-content').hidden = false;
 }
 
