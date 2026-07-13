@@ -45,5 +45,8 @@ export default {async fetch(request,env){
   const target=env[`APP_${match[1].toUpperCase()}_URL`]; if(!target)return json(env,{error:`${match[1]} endpoint is not configured`},503);
   const upstream=new URL(target); upstream.searchParams.set('endpoint','summary'); if(env.APP_SHARED_TOKEN)upstream.searchParams.set('token',env.APP_SHARED_TOKEN);
   const response=await fetch(upstream,{headers:{Accept:'application/json'}}); if(!response.ok)return json(env,{error:'Upstream application request failed'},502);
-  return new Response(await response.text(),{status:200,headers:cors(env,{'Content-Type':'application/json; charset=utf-8'})});
+  const contentType=response.headers.get('Content-Type')||'', body=await response.text();
+  if(!contentType.toLowerCase().includes('application/json'))return json(env,{error:'Apps Script API deployment requires configuration'},502);
+  try { JSON.parse(body); } catch { return json(env,{error:'Apps Script API returned invalid JSON'},502); }
+  return new Response(body,{status:200,headers:cors(env,{'Content-Type':'application/json; charset=utf-8'})});
 }};
