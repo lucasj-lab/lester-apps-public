@@ -30,6 +30,26 @@ function showUser(user) {
 
 let googleReady = false;
 let googleClientId = '';
+let googleSdkPromise;
+
+function loadGoogleSdk(forceReload = false) {
+  if (globalThis.google?.accounts?.id) return Promise.resolve();
+  if (forceReload) {
+    document.querySelector('#google-identity-sdk')?.remove();
+    googleSdkPromise = null;
+  }
+  if (googleSdkPromise) return googleSdkPromise;
+  googleSdkPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.id = 'google-identity-sdk';
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.onload = () => globalThis.google?.accounts?.id ? resolve() : reject(new Error('Google Identity did not initialize.'));
+    script.onerror = () => reject(new Error('Google Sign-In could not be downloaded.'));
+    document.head.append(script);
+  });
+  return googleSdkPromise;
+}
 
 function handleCredential({credential}) {
   loginButton.disabled = true;
@@ -39,10 +59,27 @@ function handleCredential({credential}) {
     .catch(error => { loginError.textContent = error.message; loginButton.disabled = false; });
 }
 
-function openGoogleLogin() {
-  if (!googleReady && googleClientId) setupGoogle();
+async function openGoogleLogin() {
+  if (!googleReady && googleClientId) {
+    loginButton.disabled = true;
+    loginError.textContent = 'Loading Google Sign-In…';
+    try {
+      await loadGoogleSdk();
+      setupGoogle();
+    } catch {
+      try {
+        await loadGoogleSdk(true);
+        setupGoogle();
+      } catch {
+        loginError.textContent = 'Google Sign-In could not load. Check content blockers or network privacy settings, then try again.';
+        loginButton.disabled = false;
+        return;
+      }
+    }
+    loginButton.disabled = false;
+  }
   if (!googleReady) {
-    loginError.textContent = 'Google Sign-In is still loading. Please try again in a moment.';
+    loginError.textContent = 'Google Sign-In could not initialize. Refresh the page and try again.';
     return;
   }
   loginError.textContent = '';
@@ -68,7 +105,12 @@ async function initialize() {
   try { showUser((await api('/auth/session')).user); return; } catch {}
   const config = await api('/config');
   googleClientId = config.googleClientId;
-  if (!setupGoogle()) loginError.textContent = 'Google Sign-In is loading. The Continue button will retry it.';
+  try {
+    await loadGoogleSdk();
+    setupGoogle();
+  } catch {
+    loginError.textContent = 'Google Sign-In will load when you select Continue with Google.';
+  }
 }
 
 document.querySelector('.journeys').addEventListener('click', event => {
